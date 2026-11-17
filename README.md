@@ -1,69 +1,149 @@
-# SecureDoc – Password Protected File Encryption
+# 🔐 SecureDoc – Password Protected File Encryption
 
-Accept the terms on the intro page, then upload a **PDF, image (PNG/JPG/...), text file or any other file**, set a password, download a PDF that asks for the password in **any** PDF reader
-(Adobe Acrobat, Chrome, Android / iOS viewers) with the native *"Enter password to open file"* dialog —
-the same experience as a password-protected e-Aadhaar PDF.
+SecureDoc is a secure document protection application built using Python and Flask. It allows users to protect sensitive files with password-based PDF encryption using AES-256 security.
 
-## How the encryption works (e-Aadhaar style)
+Upload a document, set a password, and download a protected PDF that prompts for a password when opened in a compatible PDF reader.
 
-e-Aadhaar PDFs use the standard **PDF Security Handler**: the password is embedded in the PDF's
-encryption dictionary, so every compliant reader prompts for it. SecureDoc uses the same mechanism,
-with a stronger cipher:
+## 🚀 Features
 
-- `pikepdf` (qpdf) with **AES-256, PDF revision 6** (`R=6`, `aes=True`)
-- User password = the password you choose; a random owner password is generated and discarded
-- Document metadata is encrypted too
-- No website-side password check — the protection lives inside the file
+- Password-protected PDF encryption.
+- AES-256 encryption using PDF revision 6.
+- PDF file encryption.
+- Image support (PNG, JPG, GIF, BMP, WEBP, TIFF).
+- Text file support (TXT, MD, CSV, LOG, JSON).
+- Other file formats supported through PDF attachments.
+- User-friendly web interface.
+- Temporary file cleanup.
+- Session-based download protection.
 
-## Supported files
+## 🔐 How Encryption Works
 
-| Upload | What you get |
+SecureDoc uses the standard PDF Security Handler through pikepdf (qpdf).
+
+- AES-256 encryption.
+- PDF revision 6 (R=6).
+- User-defined password.
+- Randomly generated owner password.
+- Encrypted document metadata.
+- Password protection built into the PDF itself.
+
+## 📂 Supported Files
+
+| File type | Output |
 |---|---|
-| PDF | The same PDF, encrypted |
-| PNG, JPG, GIF, BMP, WEBP, TIFF | Image placed on an A4 PDF page, encrypted |
-| TXT, MD, CSV, LOG, JSON, ... | Text rendered into a PDF, encrypted |
-| Anything else (DOCX, ZIP, XLSX, ...) | Cover page + your original file embedded unchanged in an encrypted PDF. Unlock it, open the Attachments panel and save the file |
+| PDF | Encrypted PDF |
+| PNG, JPG, GIF, BMP, WEBP, TIFF | Image converted into PDF and encrypted |
+| TXT, MD, CSV, JSON, LOG | Text converted into PDF and encrypted |
+| DOCX, ZIP, XLSX and others | Original file embedded as a PDF attachment and encrypted |
 
-## Flow
+## 🔄 Application Workflow
 
-Intro page (`/`) with Terms & Conditions -> tick "I agree" -> Agree & Continue -> upload page (`/app`) -> success / download.
+1. Open the SecureDoc website.
+2. Accept the Terms and Conditions.
+3. Upload a document.
+4. Enter a password.
+5. Generate the encrypted PDF.
+6. Download the protected document.
+7. Enter the password in a compatible PDF reader.
 
-## Run it
+## 🛠️ Technologies Used
+
+- Python
+- Flask
+- HTML5
+- CSS3
+- JavaScript
+- pikepdf
+- qpdf
+- Git and GitHub
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the repository
 
 ```bash
-cd SecureDoc
-python -m venv venv
-source venv/bin/activate          # Windows: venv\Scripts\activate
+git clone https://github.com/GorlaAdhithya/securedoc.git
+cd securedoc
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+### 3. Activate the environment
+
+Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 4. Install dependencies
+
+```bash
 pip install -r requirements.txt
-python app.py                     # open http://127.0.0.1:5000
 ```
 
-Production: `SECRET_KEY=<long random> SESSION_COOKIE_SECURE=1 gunicorn -w 2 app:app` behind HTTPS.
-(Rate limiting is in-memory per worker; encrypted downloads are tied to the browser session via a cookie.)
+### 5. Run the application
 
-## Security notes
-
-- Passwords are never stored or logged; the random owner password is never stored
-- Uploads: extension + MIME + `%PDF-` magic bytes + size (20 MB) + parse check; encrypted/corrupt PDFs rejected
-- Unencrypted upload is written with a random name (mode 0600) and deleted in a `finally` block
-- Encrypted files are stored under random 128-bit tokens, only downloadable by the creating session,
-  and auto-deleted after 15 minutes (or via "Delete now")
-- CSRF token, strict security headers, no path input from users (`secure_filename`, token regex)
-
-## Configure
-
-Edit `config.py` (upload size, TTL, password policy, rate limit).
-
-## Optional: MySQL
-
-Not needed for v1. Add it later for audit logs (never store passwords or file contents).
-
-## Structure
-
+```bash
+python app.py
 ```
+
+### 6. Open in your browser
+
+http://127.0.0.1:5000
+
+## 🛡️ Security Considerations
+
+- Passwords should never be stored in plain text.
+- Validate uploaded file types and sizes.
+- Use secure temporary file handling.
+- Protect downloads using session authorization.
+- Configure HTTPS and a strong secret key in production.
+- Never commit passwords, private documents, or secret keys to GitHub.
+
+## 📁 Project Structure
+
+```text
 SecureDoc/
-  app.py  converters.py  config.py  requirements.txt  README.md
-  templates/  intro.html  index.html  success.html
-  static/css/style.css  static/js/script.js  static/img/logo.svg
-  uploads/  encrypted/
+│
+├── app.py
+├── config.py
+├── converters.py
+├── requirements.txt
+├── README.md
+│
+├── templates/
+│   ├── intro.html
+│   ├── index.html
+│   └── success.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── img/
+│
+├── uploads/
+└── encrypted/
 ```
+
+## 🔮 Future Enhancements
+
+- Cloud deployment.
+- Multiple document encryption.
+- Improved file format support.
+- Enhanced security monitoring.
+- User authentication.
+
+## 👨‍💻 Developer
+
+**Adhithya Gorla**
+
+GitHub: https://github.com/GorlaAdhithya
+
+## 📜 License
+
+Educational project. Add a license file if you intend to distribute the project under an open-source license.
