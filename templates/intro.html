@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecureDoc – Welcome</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="sd-intro-body">
+  <main class="container sd-intro">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-9">
+        <div class="text-center sd-intro-head">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="SecureDoc logo" class="sd-intro-logo">
+          <h1 class="sd-intro-title">SecureDoc</h1>
+          <p class="sd-intro-tag">Lock any file with a password.<br>Opens only for people who know it.</p>
+        </div>
+
+        <div class="sd-card">
+          <h2 class="sd-terms-title"><i class="bi bi-file-earmark-text-fill"></i> Terms &amp; Conditions</h2>
+
+          <div class="sd-terms" tabindex="0" aria-label="Terms and conditions">
+            <p><strong>1. Service.</strong> SecureDoc protects your files with a password using AES-256 PDF encryption. PDFs are encrypted directly. Images and text files are placed in a PDF first. Other files are stored unchanged inside an encrypted PDF.</p>
+            <p><strong>2. Your password.</strong> You choose the password. It is used only to encrypt your file and is never saved or logged. <strong>We cannot recover a forgotten password</strong>, and nobody can open your file without it.</p>
+            <p><strong>3. Your files.</strong> Upload only files you own or have permission to protect. Do not upload anything illegal, harmful or that infringes someone else's rights.</p>
+            <p><strong>4. Temporary storage.</strong> Your original file is deleted as soon as encryption finishes. The encrypted file is kept for 15 minutes so you can download it, then deleted automatically. You can delete it earlier at any time.</p>
+            <p><strong>5. Privacy.</strong> Files and passwords are not shared with third parties or used for any other purpose.</p>
+            <p><strong>6. Responsibility.</strong> Keep your password and downloaded file safe. A weak password gives weak protection. The service is provided "as is", without warranty, and you use it at your own risk.</p>
+            <p class="mb-0"><strong>7. Acceptance.</strong> By continuing you confirm that you have read and agree to these terms.</p>
+          </div>
+
+          <form method="post" action="{{ url_for('accept') }}" id="agreeForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-check sd-agree">
+              <input class="form-check-input" type="checkbox" id="agree" name="agree">
+              <label class="form-check-label" for="agree">I have read and agree to the Terms &amp; Conditions</label>
+            </div>
+            <button type="submit" id="continueBtn" class="btn sd-btn w-100 mt-3" disabled>
+              Agree &amp; Continue <i class="bi bi-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="row sd-features text-center g-3 mt-2">
+          <div class="col-4"><i class="bi bi-file-lock2-fill"></i><span>AES-256 encryption</span></div>
+          <div class="col-4"><i class="bi bi-files"></i><span>PDF, images, text &amp; more</span></div>
+          <div class="col-4"><i class="bi bi-trash3-fill"></i><span>Auto-deleted in 15 min</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

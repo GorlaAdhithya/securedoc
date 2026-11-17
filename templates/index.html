@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>SecureDoc – Password Protect Any File</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body data-max-mb="{{ max_mb }}" data-min-len="{{ min_len }}">
+  <nav class="navbar sd-nav">
+    <div class="container">
+      <a class="navbar-brand sd-brand" href="{{ url_for('app_page') }}">
+        <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" class="sd-logo-img"> SecureDoc
+      </a>
+      <span class="sd-nav-tag d-none d-sm-inline"><i class="bi bi-lock-fill"></i> AES-256 Encryption</span>
+    </div>
+  </nav>
+
+  <header class="sd-hero text-center">
+    <div class="container">
+      <h1>Lock your file with a password</h1>
+      <p class="lead">Upload a PDF, image, text file or any document. You get a password-protected PDF that asks for the password in <strong>any</strong> PDF reader, just like an e-Aadhaar PDF.</p>
+    </div>
+  </header>
+
+  <main class="container sd-main">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-md-9">
+        <div class="sd-card">
+          <div id="alertBox" class="alert d-none" role="alert"></div>
+
+          <form id="encryptForm" novalidate autocomplete="off">
+            <label class="sd-label">1. Upload your file</label>
+            <div id="dropZone" class="sd-drop" tabindex="0" role="button" aria-label="Upload file">
+              <i class="bi bi-cloud-arrow-up-fill sd-drop-icon"></i>
+              <div class="sd-drop-title">Drag &amp; drop your file here</div>
+              <div class="sd-drop-sub">or <span class="sd-link">browse files</span> · max {{ max_mb }} MB</div>
+              <div class="sd-types">
+                <span><i class="bi bi-file-earmark-pdf"></i> PDF</span>
+                <span><i class="bi bi-file-earmark-image"></i> PNG / JPG</span>
+                <span><i class="bi bi-file-earmark-text"></i> TXT</span>
+                <span><i class="bi bi-files"></i> Any file</span>
+              </div>
+              <input type="file" id="fileInput" name="document" hidden>
+            </div>
+
+            <div id="fileInfo" class="sd-file d-none">
+              <i id="fileIcon" class="bi bi-file-earmark-fill"></i>
+              <div class="sd-file-text">
+                <div id="fileName" class="sd-file-name"></div>
+                <div id="fileSize" class="sd-file-size"></div>
+              </div>
+              <button type="button" id="removeFile" class="btn-close" aria-label="Remove file"></button>
+            </div>
+            <div id="kindNote" class="sd-kind-note d-none"></div>
+
+            <label class="sd-label mt-4" for="password">2. Set a password</label>
+            <div class="sd-input-group">
+              <input type="password" id="password" name="password" class="form-control" placeholder="Create a strong password" autocomplete="new-password" maxlength="128">
+              <button type="button" class="sd-eye" data-target="password" aria-label="Show or hide password"><i class="bi bi-eye"></i></button>
+            </div>
+            <div class="sd-meter mt-2"><div id="meterBar"></div></div>
+            <div id="meterText" class="sd-meter-text">Min {{ min_len }} characters, with at least 3 of: a–z, A–Z, 0–9, symbols.</div>
+
+            <label class="sd-label mt-3" for="confirmPassword">3. Confirm password</label>
+            <div class="sd-input-group">
+              <input type="password" id="confirmPassword" name="confirm_password" class="form-control" placeholder="Re-enter password" autocomplete="new-password" maxlength="128">
+              <button type="button" class="sd-eye" data-target="confirmPassword" aria-label="Show or hide password"><i class="bi bi-eye"></i></button>
+            </div>
+            <div id="matchText" class="sd-meter-text"></div>
+
+            <div id="progressWrap" class="mt-4 d-none">
+              <div class="d-flex justify-content-between sd-progress-label">
+                <span id="progressLabel">Uploading…</span><span id="progressPct">0%</span>
+              </div>
+              <div class="progress sd-progress"><div id="progressBar" class="progress-bar" style="width:0%"></div></div>
+            </div>
+
+            <button type="submit" id="encryptBtn" class="btn sd-btn w-100 mt-4" disabled>
+              <i class="bi bi-lock-fill"></i> Encrypt File
+            </button>
+          </form>
+        </div>
+
+        <div class="row sd-features text-center g-3 mt-2">
+          <div class="col-4"><i class="bi bi-file-lock2-fill"></i><span>Real PDF-level encryption</span></div>
+          <div class="col-4"><i class="bi bi-eye-slash-fill"></i><span>Password never stored</span></div>
+          <div class="col-4"><i class="bi bi-trash3-fill"></i><span>Auto-deleted in 15 min</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="sd-footer text-center">
+    <div class="container">SecureDoc · Your password is used only to encrypt the file and is never saved or logged. Use HTTPS in production.</div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

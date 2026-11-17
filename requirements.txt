@@ -1,0 +1,8 @@
+Flask>=3.0
+pikepdf>=9.0
+Pillow>=10.0
+reportlab>=4.0
+gunicorn>=22.0
+Flask-Limiter>=3.8
+Flask-WTF>=1.2
+cryptography>=43.0
