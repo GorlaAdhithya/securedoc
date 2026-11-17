@@ -221,3 +221,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SecureDoc local files
+.venv-1/
+uploads/
+encrypted/
+__pycache__/
+*.pyc
